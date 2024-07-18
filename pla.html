@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Plagiarism Checker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-top: 30px;
+        }
+
+        form {
+            width: 60%;
+            margin: 0 auto;
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            resize: vertical;
+            font-size: 16px;
+            font-family: Arial, sans-serif;
+        }
+
+        input[type="submit"],
+        button[type="button"] {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        input[type="submit"]:hover,
+        button[type="button"]:hover {
+            background-color: #45a049;
+        }
+
+        p {
+            text-align: center;
+            margin-top: 20px;
+            color: #333;
+            font-size: 18px;
+        }
+
+        #counts {
+            text-align: center;
+            margin-top: 10px;
+            color: #555;
+            font-size: 16px;
+        }
+
+        .error {
+            color: #ff0000;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Plagiarism Checker</h1>
+    <form method="POST" enctype="multipart/form-data" onsubmit="return validateForm()">
+        <textarea name="query" id="query" rows="10" cols="50" placeholder="Enter your text here..." required>{{ query }}</textarea>
+        <br>
+        <input type="file" name="file" id="file" accept=".txt" onchange="loadFileContent()">
+        <div class="error" id="error"></div>
+        <br>
+        <input type="submit" value="Check">
+        <button type="button" onclick="clearText()">Clear Text</button>
+        <div id="counts">Character Count: 0 | Word Count: 0</div>
+    </form>
+    {% if output %}
+        <p>{{ output }}</p>
+    {% endif %}
+
+    <script>
+        function validateForm() {
+            var text = document.querySelector('#query').value.trim();
+            var errorDiv = document.querySelector('#error');
+            errorDiv.innerHTML = '';
+
+            if (text === '') {
+                errorDiv.innerHTML = 'Please enter some text.';
+                return false;
+            }
+
+            if (text.length < 10) {
+                errorDiv.innerHTML = 'Text must be at least 10 characters long.';
+                return false;
+            }
+
+            return true;
+        }
+
+        function clearText() {
+            document.querySelector('#query').value = '';
+            updateCounts();
+        }
+
+        function updateCounts() {
+            var text = document.querySelector('#query').value;
+            var charCount = text.length;
+            var wordCount = text.trim().split(/\s+/).filter(Boolean).length;
+
+            document.querySelector('#counts').textContent = 'Character Count: ' + charCount + ' | Word Count: ' + wordCount;
+        }
+
+        function loadFileContent() {
+            var file = document.querySelector('#file').files[0];
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                document.querySelector('#query').value = e.target.result;
+                updateCounts();
+            };
+            if (file) {
+                reader.readAsText(file);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            updateCounts();
+        });
+    </script>
+</body>
+</html>

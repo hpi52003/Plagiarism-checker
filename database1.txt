@@ -1,0 +1,1 @@
+Create Templates Directory: Create a templates directory in the same location as app.py and save the pla.html file inside it. Ensure that pla.html is correctly set up to display the query form and the output.

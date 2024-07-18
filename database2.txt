@@ -1,0 +1,1 @@
+This will start the Flask development server, and you should see output indicating that the server is running. By default, the server will run on http://127.0.0.1:5000/. You can open this URL in your web browser to interact with the application.

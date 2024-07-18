@@ -1,0 +1,1 @@
+Run the Flask Application: Open a command prompt or terminal, navigate to the directory where app.py is saved, and run the following command:
